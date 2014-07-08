@@ -1,3 +1,5 @@
 *.fa
 *.fq
-log
+*.log
+*.tsv
+*.tsv.md
