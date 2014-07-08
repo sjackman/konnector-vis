@@ -8,7 +8,7 @@ b=2000
 
 # Phony targets
 
-all: stats.tsv.md e0.001.neato.png e0.002.neato.png
+all: e0.001_one.ccomp.neato.png
 
 .PHONY: all
 .DELETE_ON_ERROR:
@@ -77,13 +77,16 @@ stats.tsv: e0_merged.fa e0.001_merged.fa e0.002_merged.fa e0.005_merged.fa
 	gvpr 'N{color="orange"} E[1]' $< >$@
 
 # Merge graphs
-%.gv: %_one_fp.orange.gv %_1.fq.red.gv $(ref).fa.black.gv %_one_merged.fa.blue.gv %_one.fq.green.gv
+%_one.gv: %_one_fp.orange.gv %_1.fq.red.gv $(ref).fa.black.gv %_one_merged.fa.blue.gv %_one.fq.green.gv
 	(echo 'strict digraph g { \
 		graph[splines=none] \
 		node[shape=point] \
 		edge[len=0.01]'; \
 		sed -E '/^digraph|^}/d' $^; \
 		echo '}') >$@
+
+%.ccomp.gv: %.gv
+	-gvpr -i 'N[color!="black"]' $< |ccomps -zX'#0' >$@
 
 # Render a graph using dot
 %.dot.png: %.gv
