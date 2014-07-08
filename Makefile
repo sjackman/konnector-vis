@@ -2,6 +2,7 @@
 
 # Parameters
 ref=g1000
+S=0
 j=2
 k=20
 b=2000
@@ -17,7 +18,7 @@ all: e0.001_one.ccomp.neato.png
 # Rules
 
 e%_1.fq e%_2.fq: $(ref).fa
-	wgsim -S 0 -e $* -N 200 -r 0 -R 0 $< e$*_1.fq e$*_2.fq
+	wgsim -S $S -e $* -N 200 -r 0 -R 0 $< e$*_1.fq e$*_2.fq
 
 %_merged.fa: %_1.fq %_2.fq
 	time konnector -j$j -v -k$k -b$b $^ -o $*
