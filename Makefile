@@ -1,4 +1,4 @@
-# Test abyss-connectpairs
+# Test ABySS-Konnector
 
 # Parameters
 ref=g1000
@@ -8,10 +8,7 @@ b=10000
 
 # Phony targets
 
-all: e0_merged.fa \
-	e0.001_merged.fa \
-	e0.002_merged.fa \
-	e0.005_merged.fa
+all: stats.tsv.md
 
 .PHONY: all
 .DELETE_ON_ERROR:
@@ -27,4 +24,10 @@ e%_1.fq e%_2.fq: $(ref).fa
 	wgsim -S 0 -e $* -N 200 -r 0 -R 0 $< e$*_1.fq e$*_2.fq
 
 %_merged.fa: %_1.fq %_2.fq
-	time abyss-connectpairs -j$j -v -k$k -b$b $^ -o $*
+	time konnector -j$j -v -k$k -b$b $^ -o $*
+
+stats.tsv: e0_merged.fa e0.001_merged.fa e0.002_merged.fa e0.005_merged.fa
+	abyss-fac $^ >$@
+
+%.tsv.md: %.tsv
+	abyss-tabtomd $< >$@
