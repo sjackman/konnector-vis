@@ -1,0 +1,39 @@
+#!/usr/bin/env ruby
+# Generate a de Bruijn graph in GraphViz format
+# Copyright 2014 Shaun Jackman
+
+require 'optparse'
+
+class String
+	# Iterate over each k-mer
+	def each_kmer k
+		return enum_for(:each_kmer, k) unless block_given?
+		(0 .. length - k).each { |i|
+			yield self[i, k]
+		}
+	end
+end
+
+# Parse command line options
+k = nil
+OptionParser.new do |opts|
+	opts.banner = "Usage: debruijngraph [-k N] [FILE]..."
+	opts.version = "0.1.0"
+	opts.release = nil
+
+	opts.on("-k", "--kmer N", OptionParser::DecimalInteger,
+			"Size of the unique tag (default 7)") do |n|
+		k = n
+	end
+end.parse!
+
+# Read a file of sequences and output a de Bruijn graph in DOT format
+puts "digraph g {"
+ARGF.each_line.reject { |s|
+	s =~ /^>/
+}.each { |s|
+	s.chomp.upcase.each_kmer(k + 1).each { |kmer|
+		print %Q["#{kmer[0..-2]}" -> "#{kmer[1..-1]}"\n]
+	}
+}
+puts "}"
