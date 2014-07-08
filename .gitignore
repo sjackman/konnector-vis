@@ -1,5 +1,8 @@
+*.bloom
 *.fa
 *.fq
+*.gv
 *.log
+*.png
 *.tsv
 *.tsv.md
