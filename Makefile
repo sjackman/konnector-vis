@@ -16,10 +16,6 @@ all: e0.001_one.ccomp.neato.png
 
 # Rules
 
-$(ref).fa:
-	curl https://raw.github.com/dzerbino/velvet/master/data/$(ref).fa \
-		|abyss-tofastq --fasta >$@
-
 e%_1.fq e%_2.fq: $(ref).fa
 	wgsim -S 0 -e $* -N 200 -r 0 -R 0 $< e$*_1.fq e$*_2.fq
 
