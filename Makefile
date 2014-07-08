@@ -4,7 +4,7 @@
 ref=g1000
 j=2
 k=20
-b=10000
+b=2000
 
 # Phony targets
 
