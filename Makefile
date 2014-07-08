@@ -41,8 +41,12 @@ stats.tsv: e0_merged.fa e0.001_merged.fa e0.002_merged.fa e0.005_merged.fa
 	(head -n4 $*_1.fq && head -n4 $*_2.fq) >$@
 
 # Connect one read using a preconstructed Bloom filter
-%_one_merged.fa: %.bloom %_one.fq
-	konnector -v -k$k -i $< -o $*_one $*_one.fq
+%_one_merged.fa %_one_d.gv: %.bloom %_one.fq
+	konnector -v -k$k -i $< -d $*_one_d.gv -o $*_one $*_one.fq
+	sed -i '' 's/^digraph.*/digraph g {/' $*_one_d.gv
+
+%_one_fp.gv: %_one_d.gv
+	gvpr 'E[head.color=="gray"]' $< >$@
 
 # Create a de Bruijn graph from a FASTA file
 %.fa.gv: %.fa
@@ -68,8 +72,12 @@ stats.tsv: e0_merged.fa e0.001_merged.fa e0.002_merged.fa e0.005_merged.fa
 %.red.gv: %.gv
 	gvpr 'N{color="red"} E[1]' $< >$@
 
+# Colour a graph orange
+%.orange.gv: %.gv
+	gvpr 'N{color="orange"} E[1]' $< >$@
+
 # Merge graphs
-%.gv: %_1.fq.red.gv $(ref).fa.black.gv %_one_merged.fa.blue.gv %_one.fq.green.gv
+%.gv: %_one_fp.orange.gv %_1.fq.red.gv $(ref).fa.black.gv %_one_merged.fa.blue.gv %_one.fq.green.gv
 	(echo 'strict digraph g { \
 		graph[splines=none] \
 		node[shape=point] \
