@@ -1,0 +1,17 @@
+digraph g {
+
+node [shape=rectangle]
+
+green [color=green
+label="Paired-end read"]
+
+blue [color=blue
+label="Connected path"]
+
+red [color=red
+label="Sequencing error"]
+
+orange [color=orange
+label="Bloom filter\nfalse positive"]
+
+}
