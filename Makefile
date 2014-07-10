@@ -17,6 +17,9 @@ all: e0.001_one.ccomp.gv.pdf
 
 # Rules
 
+g1000.fa:
+	farand 1000 >g1000.fa
+
 e%_1.fq e%_2.fq: $(ref).fa
 	wgsim -S $S -e $* -N 200 -r 0 -R 0 $< e$*_1.fq e$*_2.fq
 
