@@ -3,6 +3,7 @@
 *.fq
 *.gv
 *.log
+*.pdf
 *.png
 *.tsv
 *.tsv.md
