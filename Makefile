@@ -9,7 +9,7 @@ b=2000
 
 # Phony targets
 
-all: e0.001_one.ccomp.gv.pdf
+all: e0.001_one.ccomp.neato.pdf
 
 .PHONY: all
 .DELETE_ON_ERROR:
@@ -88,6 +88,10 @@ stats.tsv: e0_merged.fa e0.001_merged.fa e0.002_merged.fa e0.005_merged.fa
 %.ccomp.gv: %.gv
 	-gvpr -i 'N[color!="black"]' $< |ccomps -zX'#0' >$@
 
+# Render a PDF of a graph using dot
+%.dot.pdf: %.gv
+	dot -Tpdf -o $@ $<
+
 # Render a PDF of a graph using neato
-%.gv.pdf: %.gv
+%.neato.pdf: %.gv
 	neato -Tpdf -o $@ $<
